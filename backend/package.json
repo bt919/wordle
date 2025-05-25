@@ -1,34 +1,34 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "This project was bootstrapped with Fastify-CLI.",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "format": "npx @biomejs/biome format --write ./src",
-    "build": "rm -rf dist  && tsc -p tsconfig.json --outDir dist",
-    "start": "node dist/index.js",
-    "dev": "tsx watch src/index.ts",
-    "prepare": "husky"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@fastify/autoload": "^6.0.0",
-    "@fastify/sensible": "^6.0.0",
-    "fastify": "^5.0.0",
-    "fastify-cli": "^7.4.0",
-    "fastify-plugin": "^5.0.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@tsconfig/node24": "^24.0.1",
-    "@types/node": "^22.15.21",
-    "husky": "^9.1.7",
-    "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
-  }
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "This project was bootstrapped with Fastify-CLI.",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "format": "npx @biomejs/biome format --write ./src",
+        "build": "rm -rf dist  && tsc -p tsconfig.json --outDir dist",
+        "start": "node dist/index.js",
+        "dev": "tsx watch src/index.ts",
+        "prepare": "cd .. && husky backend/.husky"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@fastify/autoload": "^6.0.0",
+        "@fastify/sensible": "^6.0.0",
+        "fastify": "^5.0.0",
+        "fastify-cli": "^7.4.0",
+        "fastify-plugin": "^5.0.0"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "1.9.4",
+        "@tsconfig/node24": "^24.0.1",
+        "@types/node": "^22.15.21",
+        "husky": "^9.1.7",
+        "tsx": "^4.19.4",
+        "typescript": "^5.8.3"
+    }
 }
