@@ -62,3 +62,6 @@ dist
 
 # sql stuff
 sql/dml.sql
+
+# environment variables
+.env
