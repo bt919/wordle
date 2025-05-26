@@ -11,7 +11,10 @@ function postgresPlugin(
 	done: () => void,
 ) {
 	if (!fastify.query) {
-		async function query(query: string, params: string[]) {
+		async function query(query: string, params: string[] = []) {
+			if (query.trim().length === 0) {
+				throw new Error("query string must be provided");
+			}
 			const result = await pool.query(query, params);
 			return result;
 		}
@@ -20,10 +23,5 @@ function postgresPlugin(
 
 	done();
 }
-
-// export const query = async (query: string, params: string[]) => {
-// 	const result = await pool.query(query, params);
-// 	return result;
-// };
 
 export default fp(postgresPlugin);
