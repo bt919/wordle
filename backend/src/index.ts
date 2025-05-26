@@ -1,7 +1,9 @@
 import fastify from "fastify";
 import postgres from "@/plugins/db";
 import { wordRoutes } from "@/routes/word/index";
+import { customWordRoutes } from "@/routes/custom-word/index";
 import type * as pg from "pg";
+import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
 declare module "fastify" {
     interface FastifyInstance {
@@ -10,11 +12,12 @@ declare module "fastify" {
 }
 
 const server = fastify({
-    logger: true,
-});
+    logger: true
+}).withTypeProvider<TypeBoxTypeProvider>()
 
 server.register(postgres);
 server.register(wordRoutes);
+server.register(customWordRoutes);
 
 server.get("/ping", async (request, reply) => {
     return "bong\n";

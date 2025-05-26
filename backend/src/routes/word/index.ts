@@ -1,9 +1,13 @@
-import type { FastifyInstance, FastifyPluginOptions } from "fastify";
+import type {
+	FastifyInstance,
+	FastifyPluginOptions,
+	HookHandlerDoneFunction,
+} from "fastify";
 
 export function wordRoutes(
 	fastify: FastifyInstance,
 	opts: FastifyPluginOptions,
-	done: () => void,
+	done: HookHandlerDoneFunction,
 ) {
 	fastify.get("/word", async (request, reply) => {
 		try {
@@ -13,7 +17,7 @@ export function wordRoutes(
 			);
 			const todaysWord = result.rows[0].word;
 
-			reply.send({ todaysWord });
+			reply.send({ word: todaysWord });
 		} catch (ex) {
 			fastify.log.error(ex);
 			return reply.status(500);
