@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import { Link } from "@tanstack/react-router";
+import { clsx } from "clsx";
 
-export function WordleLogo() {
+export function WordleLogo({ theme = "light" }: { theme?: "light" | "dark" }) {
 	const cube = [
 		"bg-slate-50",
 		"bg-slate-50",
@@ -26,7 +27,13 @@ export function WordleLogo() {
 					/>
 				))}
 			</div>
-			<Link to="/" className="hover:text-slate-800">
+			<Link
+				to="/"
+				className={clsx(
+					theme === "light" && "text-slate-900 hover:text-slate-800",
+					theme === "dark" && "text-slate-200 hover:text-slate-300",
+				)}
+			>
 				<h1 className="font-[1000] text-3xl mt-4 mb-4">Wordle</h1>
 			</Link>
 		</Fragment>
