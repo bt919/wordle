@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import logo from "../logo.svg";
+import { Link } from "@tanstack/react-router";
+
+import { WordleLogo } from "@/components/WordleLogo";
 
 export const Route = createFileRoute("/")({
 	component: App,
@@ -7,33 +9,23 @@ export const Route = createFileRoute("/")({
 
 function App() {
 	return (
-		<div className="text-center">
-			<header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-				<img
-					src={logo}
-					className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-					alt="logo"
-				/>
-				<p>
-					Edit <code>src/routes/index.tsx</code> and save to reload.
-				</p>
-				<a
-					className="text-[#61dafb] hover:underline"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
+		<div className="h-screen w-screen flex flex-col justify-center items-center">
+			<WordleLogo />
+			<p className="text-2xl mb-4">Get 6 chances to guess a 5-letter word.</p>
+			<div className="flex gap-4">
+				<Link
+					to="/custom"
+					className="bg-slate-500 text-slate-50 p-4 w-48 h-12 rounded-4xl flex justify-center items-center font-bold hover:bg-slate-400 hover:cursor-pointer hover:text-slate-100"
 				>
-					Learn React
-				</a>
-				<a
-					className="text-[#61dafb] hover:underline"
-					href="https://tanstack.com"
-					target="_blank"
-					rel="noopener noreferrer"
+					Create your own
+				</Link>
+				<Link
+					to="/play"
+					className="bg-slate-900 text-slate-50 p-4 w-48 h-12 rounded-4xl flex justify-center items-center font-bold hover:bg-slate-800 hover:cursor-pointer hover:text-slate-100"
 				>
-					Learn TanStack
-				</a>
-			</header>
+					Play
+				</Link>
+			</div>
 		</div>
 	);
 }
