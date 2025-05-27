@@ -143,5 +143,43 @@ export function customWordRoutes(
 		},
 	);
 
+	fastify.get(
+		"/custom-word/:id",
+		{
+			schema: {
+				params: Type.Object({
+					id: Type.String({
+						minLength: 22,
+						maxLength: 22,
+					}),
+				}),
+			},
+		},
+		async (
+			request: FastifyRequest<{ Params: { id: string } }>,
+			reply: FastifyReply,
+		) => {
+			try {
+				const id = request.params.id;
+
+				const params = [id];
+				const result = await fastify.query(
+					`SELECT word
+                                                FROM user_defined_words
+                                                WHERE id = $1`,
+					params,
+				);
+				const { word } = result.rows[0];
+
+				return reply.status(200).send({ wordLength: word.length });
+			} catch (ex) {
+				fastify.log.error(ex);
+				return reply
+					.status(500)
+					.send({ message: "Unexpected error. Try again later." });
+			}
+		},
+	);
+
 	done();
 }
