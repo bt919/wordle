@@ -169,6 +169,11 @@ export function customWordRoutes(
                                                 WHERE id = $1`,
 					params,
 				);
+
+				if (result.rowCount === 0) {
+					return reply.status(404).send({});
+				}
+
 				const { word } = result.rows[0];
 
 				return reply.status(200).send({ wordLength: word.length });
