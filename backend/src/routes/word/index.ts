@@ -45,6 +45,7 @@ export function wordRoutes(
 		) => {
 			try {
 				const { guess } = request.body;
+
 				const result = await fastify.query(
 					"SELECT word FROM words WHERE word_date = NOW()::date",
 				);

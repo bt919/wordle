@@ -1,8 +1,10 @@
 import fs from "node:fs";
 
 // the file below can be found here: https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c
+// this file also contains previous wordle answers so this script should be ran twice: https://gist.github.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b
 const filePath = "wordle-allowed-guesses.txt";
-fs.readFile(filePath, "utf8", (err, data) => {
+const filePath1 = "wordle-answers-alphabetical.txt";
+fs.readFile(filePath1, "utf8", (err, data) => {
     if (err) {
         console.error(err);
         return;

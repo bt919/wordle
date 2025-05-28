@@ -22,7 +22,7 @@ INSERT INTO words SELECT 'your_word_in_single_quotes', NOW()::date;
 The command below could be used to generate INSERT statement for the allowed_words
 table.
 ```
-npx tsx populate_allowed_words.ts > allowed_words_dml.txt
+$ npx tsx populate_allowed_words.ts > allowed_words_dml.txt
 ```
 
 ## backend
@@ -35,5 +35,4 @@ to both run the server, and test it out:
 ```
 $ npm run dev
 $ curl http://localhost:8080/ping # this should be ran on another terminal
-$ curl http://localhost:8080/word # this works if your db is setup and populated with words
 ```

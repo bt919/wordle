@@ -64,7 +64,7 @@ dist
 sql/dml.sql
 sql/allowed_words_dml.txt
 sql/wordle-allowed-guesses.txt
-
+sql/wordle-answers-alphabetical.txt
 
 # environment variables
 .env
