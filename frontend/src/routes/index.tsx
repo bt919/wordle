@@ -15,7 +15,7 @@ function App() {
             <div className="flex gap-4">
                 <Link
                     to="/custom"
-                    className="bg-slate-600 text-slate-50 p-4 w-48 h-12 rounded-4xl flex justify-center items-center font-bold hover:bg-slate-500 hover:cursor-pointer hover:text-slate-100"
+                    className="bg-slate-600 text-slate-100 p-4 w-48 h-12 rounded-4xl flex justify-center items-center font-bold hover:bg-slate-500 hover:cursor-pointer hover:text-slate-200"
                 >
                     Create your own
                 </Link>

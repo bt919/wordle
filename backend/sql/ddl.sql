@@ -13,3 +13,9 @@ CREATE TABLE user_defined_words (
     word TEXT NOT NULL,
     hashed_password TEXT
 );
+
+-- a list of allowed words for the
+-- classic 5-letter wordle mode
+CREATE TABLE allowed_words (
+    word TEXT PRIMARY KEY
+);

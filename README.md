@@ -19,7 +19,11 @@ The command above populates the words table with random words for the next
 ```
 INSERT INTO words SELECT 'your_word_in_single_quotes', NOW()::date;
 ```
-
+The command below could be used to generate INSERT statement for the allowed_words
+table.
+```
+npx tsx populate_allowed_words.ts > allowed_words_dml.txt
+```
 
 ## backend
 To start running the backend, run the following commands: 
