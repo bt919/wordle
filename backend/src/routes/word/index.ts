@@ -12,21 +12,6 @@ export function wordRoutes(
 	opts: FastifyPluginOptions,
 	done: HookHandlerDoneFunction,
 ) {
-	fastify.get("/word", async (request, reply) => {
-		try {
-			const result = await fastify.query(
-				"SELECT word FROM words WHERE word_date = NOW()::date",
-				[],
-			);
-			const todaysWord = result.rows[0].word;
-
-			reply.send({ word: todaysWord });
-		} catch (ex) {
-			fastify.log.error(ex);
-			return reply.status(500);
-		}
-	});
-
 	fastify.post(
 		"/word",
 		{
