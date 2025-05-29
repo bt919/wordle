@@ -1,9 +1,11 @@
+import cors from "@fastify/cors"
 import fastify from "fastify";
-import postgres from "@/plugins/db";
-import { wordRoutes } from "@/routes/word/index";
-import { customWordRoutes } from "@/routes/custom-word/index";
 import type * as pg from "pg";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+
+import { customWordRoutes } from "@/routes/custom-word/index";
+import postgres from "@/plugins/db";
+import { wordRoutes } from "@/routes/word/index";
 
 declare module "fastify" {
     interface FastifyInstance {
@@ -16,6 +18,7 @@ const server = fastify({
 }).withTypeProvider<TypeBoxTypeProvider>()
 
 server.register(postgres);
+server.register(cors, {})
 server.register(wordRoutes);
 server.register(customWordRoutes);
 
