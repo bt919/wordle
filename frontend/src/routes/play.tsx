@@ -10,6 +10,7 @@ export const Route = createFileRoute("/play")({
 });
 
 function Play() {
+	const [isKeyPressed, setIsKeyPressed] = useState(false);
 	const [isGuessCorrect, setIsGuessCorrect] = useState(false);
 	const [guesses, setGuesses] = useState<string[]>(["", "", "", "", "", ""]);
 	const [isFetching, setIsFetching] = useState(false);
@@ -60,9 +61,14 @@ function Play() {
 	};
 
 	const handleKeyDown = (e: KeyboardEvent) => {
+		if (e.repeat) {
+			return;
+		}
+
 		const currentIndex = guesses.findIndex((guess) => guess.length < 5);
 		const ch = e.key;
 		if (
+			isKeyPressed ||
 			isGuessCorrect ||
 			currentIndex === -1 ||
 			!(
