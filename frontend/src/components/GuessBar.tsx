@@ -20,6 +20,9 @@ export function GuessBar({
 							"border-gray-500": guess.length > 0,
 						},
 						{
+							"animate-popout": guess.length === 1,
+						},
+						{
 							"border-gray-600": guess.length <= 0,
 						},
 						{
@@ -42,6 +45,9 @@ export function GuessBar({
 						"h-16 w-16 border-2 text-slate-200 text-4xl font-[1000] flex justify-center items-center select-none",
 						{
 							"border-gray-500": guess.length > 1,
+						},
+						{
+							"animate-popout": guess.length === 2,
 						},
 						{
 							"border-gray-600": guess.length <= 1,
@@ -68,6 +74,9 @@ export function GuessBar({
 							"border-gray-500": guess.length > 2,
 						},
 						{
+							"animate-popout": guess.length === 3,
+						},
+						{
 							"border-gray-600": guess.length <= 2,
 						},
 						{
@@ -90,6 +99,9 @@ export function GuessBar({
 						"h-16 w-16 border-2 text-slate-200 text-4xl font-[1000] flex justify-center items-center select-none",
 						{
 							"border-gray-500": guess.length > 3,
+						},
+						{
+							"animate-popout": guess.length === 4,
 						},
 						{
 							"border-gray-600": guess.length <= 3,
@@ -115,6 +127,9 @@ export function GuessBar({
 						"h-16 w-16 border-2 text-slate-200 text-4xl font-[1000] flex justify-center items-center select-none",
 						{
 							"border-gray-500": guess.length > 4,
+						},
+						{
+							"animate-popout": guess.length === 5,
 						},
 						{
 							"border-gray-600": guess.length <= 4,

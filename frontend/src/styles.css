@@ -42,3 +42,19 @@ code {
         min-width: 100%;
     }
 }
+
+@theme {
+    --animate-popout: popout 50ms ease-in-out;
+
+    @keyframes popout {
+
+        0%,
+        100% {
+            transform: scale(1)
+        }
+
+        50% {
+            transform: scale(1.15);
+        }
+    }
+}
