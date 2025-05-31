@@ -26,19 +26,22 @@ export function GuessBar({
 							"border-gray-500": guess.length > 0,
 						},
 						{
-							"animate-popout": guess.length === 1,
+							"motion-safe:animate-popout": guess.length === 1,
 						},
 						{
 							"border-gray-600": guess.length <= 0,
 						},
 						{
-							"bg-gray-600 border-slate-950": isGuessComplete,
+							"transition delay-[500ms] ease-in-out bg-gray-600 border-slate-950 motion-safe:animate-[xRotate_900ms_ease-in-out]":
+								isGuessComplete,
 						},
 						{
-							"bg-[#B59F38]": misplacedLetters.indexOf(0) !== -1,
+							"transition delay-[500ms] ease-in-out bg-[#B59F38]":
+								misplacedLetters.indexOf(0) !== -1,
 						},
 						{
-							"bg-green-600": correctLetters.indexOf(0) !== -1,
+							"transition delay-[500ms] ease-in-out bg-green-600":
+								correctLetters.indexOf(0) !== -1,
 						},
 					),
 				)}
@@ -53,19 +56,22 @@ export function GuessBar({
 							"border-gray-500": guess.length > 1,
 						},
 						{
-							"animate-popout": guess.length === 2,
+							"motion-safe:animate-popout": guess.length === 2,
 						},
 						{
 							"border-gray-600": guess.length <= 1,
 						},
 						{
-							"bg-gray-600 border-slate-950": isGuessComplete,
+							"transition delay-[800ms] ease-in-out bg-gray-600 border-slate-950 motion-safe:animate-[xRotate_900ms_ease-in-out_300ms]":
+								isGuessComplete,
 						},
 						{
-							"bg-[#B59F38]": misplacedLetters.indexOf(1) !== -1,
+							"transition delay-[800ms] ease-in-out bg-[#B59F38]":
+								misplacedLetters.indexOf(1) !== -1,
 						},
 						{
-							"bg-green-600": correctLetters.indexOf(1) !== -1,
+							"transition delay-[800ms] ease-in-out bg-green-600":
+								correctLetters.indexOf(1) !== -1,
 						},
 					),
 				)}
@@ -80,19 +86,22 @@ export function GuessBar({
 							"border-gray-500": guess.length > 2,
 						},
 						{
-							"animate-popout": guess.length === 3,
+							"motion-safe:animate-popout": guess.length === 3,
 						},
 						{
 							"border-gray-600": guess.length <= 2,
 						},
 						{
-							"bg-gray-600 border-slate-950": isGuessComplete,
+							"transition delay-[1100ms] ease-in-out bg-gray-600 border-slate-950 motion-safe:animate-[xRotate_900ms_ease-in-out_600ms]":
+								isGuessComplete,
 						},
 						{
-							"bg-[#B59F38]": misplacedLetters.indexOf(2) !== -1,
+							"transition delay-[1100ms] ease-in-out bg-[#B59F38]":
+								misplacedLetters.indexOf(2) !== -1,
 						},
 						{
-							"bg-green-600": correctLetters.indexOf(2) !== -1,
+							"transition delay-[1100ms] ease-in-out bg-green-600":
+								correctLetters.indexOf(2) !== -1,
 						},
 					),
 				)}
@@ -107,20 +116,23 @@ export function GuessBar({
 							"border-gray-500": guess.length > 3,
 						},
 						{
-							"animate-popout": guess.length === 4,
+							"motion-safe:animate-popout": guess.length === 4,
 						},
 						{
 							"border-gray-600": guess.length <= 3,
 						},
 						{
-							"bg-gray-600 border-slate-950": isGuessComplete,
+							"transition delay-[1400ms] ease-in-out bg-gray-600 border-slate-950 motion-safe:animate-[xRotate_900ms_ease-in-out_900ms]":
+								isGuessComplete,
 						},
 
 						{
-							"bg-[#B59F38]": misplacedLetters.indexOf(3) !== -1,
+							"transition delay-[1400ms] ease-in-out bg-[#B59F38]":
+								misplacedLetters.indexOf(3) !== -1,
 						},
 						{
-							"bg-green-600": correctLetters.indexOf(3) !== -1,
+							"transition delay-[1400ms] ease-in-out bg-green-600":
+								correctLetters.indexOf(3) !== -1,
 						},
 					),
 				)}
@@ -135,20 +147,22 @@ export function GuessBar({
 							"border-gray-500": guess.length > 4,
 						},
 						{
-							"animate-popout": guess.length === 5,
+							"motion-safe:animate-popout": guess.length === 5,
 						},
 						{
 							"border-gray-600": guess.length <= 4,
 						},
 						{
-							"bg-gray-600 border-slate-950": isGuessComplete,
-						},
-
-						{
-							"bg-[#B59F38]": misplacedLetters.indexOf(4) !== -1,
+							"transition delay-[1700ms] ease-in-out bg-gray-600 border-slate-950 motion-safe:animate-[xRotate_900ms_ease-in-out_1200ms]":
+								isGuessComplete,
 						},
 						{
-							"bg-green-600": correctLetters.indexOf(4) !== -1,
+							"transition delay-[1700ms] ease-in-out bg-[#B59F38]":
+								misplacedLetters.indexOf(4) !== -1,
+						},
+						{
+							"transition delay-[1700ms] ease-in-out bg-green-600":
+								correctLetters.indexOf(4) !== -1,
 						},
 					),
 				)}
