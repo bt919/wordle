@@ -9,9 +9,11 @@ export const Route = createFileRoute("/")({
 
 function App() {
     return (
-        <div className="h-screen w-screen flex flex-col justify-center items-center">
+        <div className="min-h-screen flex flex-col justify-center items-center">
             <WordleLogo />
-            <p className="text-lg sm:text-2xl mb-4">Get 6 chances to guess a 5-letter word.</p>
+            <p className="text-lg sm:text-2xl mb-4">
+                Get 6 chances to guess a 5-letter word.
+            </p>
             <div className="flex gap-4 flex-col sm:flex-row">
                 <Link
                     to="/custom"

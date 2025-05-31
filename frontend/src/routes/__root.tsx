@@ -8,18 +8,18 @@ import TanStackQueryLayout from "../integrations/tanstack-query/layout.tsx";
 import type { QueryClient } from "@tanstack/react-query";
 
 interface MyRouterContext {
-	queryClient: QueryClient;
+    queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-	component: () => (
-		<>
-			{/* <Header /> */}
+    component: () => (
+        <>
+            {/* <Header /> */}
 
-			<Outlet />
-			<TanStackRouterDevtools />
+            <Outlet />
+            <TanStackRouterDevtools />
 
-			<TanStackQueryLayout />
-		</>
-	),
+            <TanStackQueryLayout />
+        </>
+    ),
 });
