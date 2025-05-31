@@ -86,7 +86,7 @@ export function Keyboard({
 	];
 
 	return (
-		<div className="mt-8 flex gap-1 flex-wrap justify-center items-center">
+		<div className="mb-4 sm:mb-2 mt-8 flex gap-1 flex-wrap justify-center items-center">
 			{layout.map((k) => {
 				if (k === "P" || k === "L") {
 					return (
@@ -96,7 +96,7 @@ export function Keyboard({
 								key={k}
 								className={twMerge(
 									clsx(
-										"hover:bg-gray-400 active:bg-gray-600 hover:cursor-pointer bg-gray-500 text-slate-100 p-4 text-lg font-bold rounded-md",
+										"hover:bg-gray-400 active:bg-gray-600 hover:cursor-pointer bg-gray-500 text-slate-100 p-2 text-md sm:p-4 sm:text-lg font-bold rounded-md",
 										{ "bg-[#3A3A3C]": lettersGuessed.has(k) },
 										{ "bg-[#B59F38]": yellowLetters.has(k) },
 										{ "bg-green-600": greenLetters.has(k) },
@@ -120,7 +120,7 @@ export function Keyboard({
 						key={k}
 						className={twMerge(
 							clsx(
-								"hover:bg-gray-400 active:bg-gray-600 hover:cursor-pointer bg-gray-500 text-slate-100 p-4 text-lg font-bold rounded-md",
+								"hover:bg-gray-400 active:bg-gray-600 hover:cursor-pointer bg-gray-500 text-slate-100 p-2 text-md sm:p-4 sm:text-lg font-bold rounded-md",
 								{ "bg-[#3A3A3C]": lettersGuessed.has(k) },
 								{ "bg-[#B59F38]": yellowLetters.has(k) },
 								{ "bg-green-600": greenLetters.has(k) },

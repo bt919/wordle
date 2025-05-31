@@ -111,6 +111,7 @@ function Play() {
 	};
 
 	useEffect(() => {
+		console.log("useEffect fired from play.tsx");
 		!isFetching && window.addEventListener("keydown", handleKeyDown);
 
 		return () => {
