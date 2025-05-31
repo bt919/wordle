@@ -11,7 +11,6 @@ export const Route = createFileRoute("/play")({
 });
 
 function Play() {
-	const [isKeyPressed, setIsKeyPressed] = useState(false);
 	const [isGuessCorrect, setIsGuessCorrect] = useState(false);
 	const [guesses, setGuesses] = useState<string[]>(["", "", "", "", "", ""]);
 	const [isFetching, setIsFetching] = useState(false);
@@ -67,15 +66,38 @@ function Play() {
 		}
 
 		const currentIndex = guesses.findIndex((guess) => guess.length < 5);
-		const ch = e.key;
+		const key = e.key;
+
+		// trigger fetch only when "Enter" is hit
+		if (isFetching) {
+			const lastIndex = currentIndex - 1;
+			if (key === "Backspace") {
+				setGuesses((prev) => {
+					return [
+						...prev.slice(0, lastIndex),
+						prev[lastIndex].slice(0, 4),
+						...prev.slice(lastIndex + 1, prev.length),
+					];
+				});
+				setIsFetching(false);
+				return;
+			}
+
+			if (key !== "Enter") {
+				return;
+			}
+
+			fetchGuess(guesses[currentIndex - 1], currentIndex - 1);
+			return;
+		}
+
 		if (
-			isKeyPressed ||
 			isGuessCorrect ||
 			currentIndex === -1 ||
 			!(
-				(ch.length === 1 && ch >= "a" && ch <= "z") ||
-				(ch.length === 1 && ch >= "A" && ch <= "Z") ||
-				ch === "Backspace"
+				(key.length === 1 && key >= "a" && key <= "z") ||
+				(key.length === 1 && key >= "A" && key <= "Z") ||
+				key === "Backspace"
 			)
 		) {
 			return;
@@ -84,7 +106,7 @@ function Play() {
 		setGuesses((prev) => {
 			const currentGuess = prev[currentIndex];
 
-			if (ch === "Backspace") {
+			if (key === "Backspace") {
 				if (currentGuess.length > 0) {
 					const newGuesses = [
 						...prev.slice(0, currentIndex),
@@ -96,10 +118,9 @@ function Play() {
 				return prev;
 			}
 
-			const nextGuess = currentGuess.concat(ch.toUpperCase());
+			const nextGuess = currentGuess.concat(key.toUpperCase());
 			if (nextGuess.length === 5) {
 				setIsFetching(true);
-				fetchGuess(nextGuess, currentIndex);
 			}
 			const newGuesses = [
 				...prev.slice(0, currentIndex),
@@ -112,12 +133,12 @@ function Play() {
 
 	useEffect(() => {
 		console.log("useEffect fired from play.tsx");
-		!isFetching && window.addEventListener("keydown", handleKeyDown);
+		window.addEventListener("keydown", handleKeyDown);
 
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [handleKeyDown, isFetching]);
+	}, [handleKeyDown]);
 
 	return (
 		<div className="min-h-screen bg-slate-950 text-slate-300 flex flex-col justify-center items-center">
