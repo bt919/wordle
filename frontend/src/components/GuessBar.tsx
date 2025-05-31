@@ -3,10 +3,16 @@ import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 
 export function GuessBar({
+	isGuessComplete,
 	guess,
 	correctLetters,
 	misplacedLetters,
-}: { guess: string; correctLetters: number[]; misplacedLetters: number[] }) {
+}: {
+	isGuessComplete: boolean;
+	guess: string;
+	correctLetters: number[];
+	misplacedLetters: number[];
+}) {
 	useEffect(() => {}, []);
 
 	// bg-gray-600
@@ -26,7 +32,7 @@ export function GuessBar({
 							"border-gray-600": guess.length <= 0,
 						},
 						{
-							"bg-gray-600 border-slate-950": guess.length === 5,
+							"bg-gray-600 border-slate-950": isGuessComplete,
 						},
 						{
 							"bg-[#B59F38]": misplacedLetters.indexOf(0) !== -1,
@@ -53,7 +59,7 @@ export function GuessBar({
 							"border-gray-600": guess.length <= 1,
 						},
 						{
-							"bg-gray-600 border-slate-950": guess.length === 5,
+							"bg-gray-600 border-slate-950": isGuessComplete,
 						},
 						{
 							"bg-[#B59F38]": misplacedLetters.indexOf(1) !== -1,
@@ -80,7 +86,7 @@ export function GuessBar({
 							"border-gray-600": guess.length <= 2,
 						},
 						{
-							"bg-gray-600 border-slate-950": guess.length === 5,
+							"bg-gray-600 border-slate-950": isGuessComplete,
 						},
 						{
 							"bg-[#B59F38]": misplacedLetters.indexOf(2) !== -1,
@@ -107,7 +113,7 @@ export function GuessBar({
 							"border-gray-600": guess.length <= 3,
 						},
 						{
-							"bg-gray-600 border-slate-950": guess.length === 5,
+							"bg-gray-600 border-slate-950": isGuessComplete,
 						},
 
 						{
@@ -135,7 +141,7 @@ export function GuessBar({
 							"border-gray-600": guess.length <= 4,
 						},
 						{
-							"bg-gray-600 border-slate-950": guess.length === 5,
+							"bg-gray-600 border-slate-950": isGuessComplete,
 						},
 
 						{
