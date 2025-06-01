@@ -72,7 +72,11 @@ function Play() {
 			true,
 			...prev.slice(currentIndex + 1, 6),
 		]);
-		setIsFetching(false);
+
+		setTimeout(() => {
+			setIsFetching(false);
+		}, 1500);
+		// setIsFetching(false);
 	};
 
 	const handleKeyDown = (e: KeyboardEvent) => {
@@ -181,6 +185,7 @@ function Play() {
 						misplacedLetters={misplacedLetters[i]}
 						key={`${i}${guess}`}
 						cn={showErrorMessage ? "animate-shake" : ""}
+						wordLength={5}
 					/>
 				))}
 			</div>
