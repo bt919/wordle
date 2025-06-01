@@ -35,7 +35,8 @@ export function GuessBar({
 									"border-gray-500": guess.length > index,
 								},
 								{
-									"animate-popout": guess.length === index + 1,
+									"animate-popout":
+										guess.length === index + 1 && !isGuessComplete,
 								},
 								{
 									"border-gray-600": guess.length <= index,
