@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { createFileRoute } from "@tanstack/react-router";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 
@@ -8,16 +7,9 @@ import { GuessBar } from "@/components/GuessBar";
 import { Keyboard } from "@/components/Keyboard";
 import { WordleLogo } from "@/components/WordleLogo";
 
-export function TestComponent() {
-    return (
-        <div>
-            <h1>test component</h1>
-        </div>
-    );
-}
-
-export function Game({ wordLength }: { wordLength?: number }) {
+export function Game({ wordLength }: { wordLength: number }) {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [showWinMessage, setShowWinMessage] = useState(false)
     const [isGuessesComplete, setIsGuessesComplete] = useState(
         new Array(6).fill(false),
     );
@@ -68,8 +60,10 @@ export function Game({ wordLength }: { wordLength?: number }) {
             data.misplacedLetters,
             ...prev.slice(currentIndex + 1, 6),
         ]);
-        if (data.correctLetters.length === 5) {
+        if (data.correctLetters.length === wordLength) {
             setIsGuessCorrect(true);
+            setTimeout(() => { setShowWinMessage(true) }, 1500)
+            setTimeout(() => { setShowWinMessage(false) }, 3000)
         }
         setIsGuessesComplete((prev) => [
             ...prev.slice(0, currentIndex),
@@ -80,7 +74,6 @@ export function Game({ wordLength }: { wordLength?: number }) {
         setTimeout(() => {
             setIsFetching(false);
         }, 1500);
-        // setIsFetching(false);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -142,7 +135,7 @@ export function Game({ wordLength }: { wordLength?: number }) {
             }
 
             const nextGuess = currentGuess.concat(key.toUpperCase());
-            if (nextGuess.length === 5) {
+            if (nextGuess.length === wordLength) {
                 setIsFetching(true);
             }
             const newGuesses = [
@@ -170,7 +163,7 @@ export function Game({ wordLength }: { wordLength?: number }) {
             <div
                 className={twMerge(
                     clsx(
-                        "absolute bg-slate-100 p-2 rounded-lg top-[100px] sm:top-[140px] invisible",
+                        "opacity-80 absolute bg-slate-100 p-2 rounded-lg top-[100px] sm:top-[140px] invisible",
                         {
                             visible: showErrorMessage,
                         },
@@ -178,6 +171,19 @@ export function Game({ wordLength }: { wordLength?: number }) {
                 )}
             >
                 <p className="text-slate-900 font-bold">Not in word list</p>
+            </div>
+
+            <div
+                className={twMerge(
+                    clsx(
+                        "opacity-80 absolute bg-slate-100 p-2 rounded-lg top-[100px] sm:top-[140px] invisible",
+                        {
+                            visible: showWinMessage,
+                        },
+                    ),
+                )}
+            >
+                <p className="text-slate-900 font-bold">Congratulations!</p>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -189,7 +195,7 @@ export function Game({ wordLength }: { wordLength?: number }) {
                         misplacedLetters={misplacedLetters[i]}
                         key={`${i}${guess}`}
                         cn={showErrorMessage ? "motion-safe:animate-shake" : ""}
-                        wordLength={5}
+                        wordLength={wordLength}
                     />
                 ))}
             </div>
