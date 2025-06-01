@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as PlayImport } from './routes/play'
+import { Route as CustomImport } from './routes/custom'
 import { Route as IndexImport } from './routes/index'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
 
@@ -20,6 +21,12 @@ import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
 const PlayRoute = PlayImport.update({
   id: '/play',
   path: '/play',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CustomRoute = CustomImport.update({
+  id: '/custom',
+  path: '/custom',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/custom': {
+      id: '/custom'
+      path: '/custom'
+      fullPath: '/custom'
+      preLoaderRoute: typeof CustomImport
+      parentRoute: typeof rootRoute
+    }
     '/play': {
       id: '/play'
       path: '/play'
@@ -67,12 +81,14 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/custom': typeof CustomRoute
   '/play': typeof PlayRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/custom': typeof CustomRoute
   '/play': typeof PlayRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
@@ -80,27 +96,30 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/custom': typeof CustomRoute
   '/play': typeof PlayRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/play' | '/demo/tanstack-query'
+  fullPaths: '/' | '/custom' | '/play' | '/demo/tanstack-query'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/play' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/play' | '/demo/tanstack-query'
+  to: '/' | '/custom' | '/play' | '/demo/tanstack-query'
+  id: '__root__' | '/' | '/custom' | '/play' | '/demo/tanstack-query'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CustomRoute: typeof CustomRoute
   PlayRoute: typeof PlayRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CustomRoute: CustomRoute,
   PlayRoute: PlayRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 }
@@ -116,12 +135,16 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/custom",
         "/play",
         "/demo/tanstack-query"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/custom": {
+      "filePath": "custom.tsx"
     },
     "/play": {
       "filePath": "play.tsx"

@@ -17,33 +17,35 @@ export function Keyboard({
 
 	useEffect(() => {
 		console.log("useEffect fired from keyboard.tsx");
-		const guessIndex = guesses.findLastIndex((g) => g.length === 5);
-		if (guessIndex === -1) {
-			return;
-		}
-
-		const currentGuess = guesses[guessIndex];
-		for (const letter of currentGuess) {
-			if (!lettersGuessed.has(letter)) {
-				setLettersGuessed((prev) => new Set(prev).add(letter));
+		setTimeout(() => {
+			const guessIndex = guesses.findLastIndex((g) => g.length === 5);
+			if (guessIndex === -1) {
+				return;
 			}
-		}
 
-		const currentCorrect = correctLetters[guessIndex];
-		for (const letterIndex of currentCorrect) {
-			const ch = currentGuess[letterIndex];
-			if (!greenLetters.has(ch)) {
-				setGreenLetters((prev) => new Set(prev).add(ch));
+			const currentGuess = guesses[guessIndex];
+			for (const letter of currentGuess) {
+				if (!lettersGuessed.has(letter)) {
+					setLettersGuessed((prev) => new Set(prev).add(letter));
+				}
 			}
-		}
 
-		const currentMisplaced = misplacedLetters[guessIndex];
-		for (const letterIndex of currentMisplaced) {
-			const ch = currentGuess[letterIndex];
-			if (!yellowLetters.has(ch)) {
-				setYellowLetters((prev) => new Set(prev).add(ch));
+			const currentCorrect = correctLetters[guessIndex];
+			for (const letterIndex of currentCorrect) {
+				const ch = currentGuess[letterIndex];
+				if (!greenLetters.has(ch)) {
+					setGreenLetters((prev) => new Set(prev).add(ch));
+				}
 			}
-		}
+
+			const currentMisplaced = misplacedLetters[guessIndex];
+			for (const letterIndex of currentMisplaced) {
+				const ch = currentGuess[letterIndex];
+				if (!yellowLetters.has(ch)) {
+					setYellowLetters((prev) => new Set(prev).add(ch));
+				}
+			}
+		}, 1700);
 	}, [
 		correctLetters,
 		misplacedLetters,

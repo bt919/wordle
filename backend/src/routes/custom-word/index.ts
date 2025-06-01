@@ -56,7 +56,7 @@ export function customWordRoutes(
 					);
 				}
 
-				return reply.status(201).send({ message: "success" });
+				return reply.status(201).send({ message: "success", id });
 			} catch (ex) {
 				fastify.log.error(ex);
 				return reply.status(500).send({});

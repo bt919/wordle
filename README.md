@@ -1,6 +1,6 @@
 # Wordle Clone
 
-## database
+## Database
 This project uses a postgresql database. You can run the ddl file against your
 local postgres db to populate it with empty tables with the following:
 ```
@@ -25,7 +25,7 @@ table.
 $ npx tsx populate_allowed_words.ts > allowed_words_dml.txt
 ```
 
-## backend
+## Backend
 To start running the backend, run the following commands: 
 ```
 $ cp .env.example .env
