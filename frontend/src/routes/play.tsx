@@ -1,4 +1,6 @@
+import clsx from "clsx";
 import { createFileRoute } from "@tanstack/react-router";
+import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 
 import { apiUrl } from "@/lib/api-url";
@@ -11,6 +13,7 @@ export const Route = createFileRoute("/play")({
 });
 
 function Play() {
+	const [showErrorMessage, setShowErrorMessage] = useState(false);
 	const [isGuessesComplete, setIsGuessesComplete] = useState(
 		new Array(6).fill(false),
 	);
@@ -43,6 +46,10 @@ function Play() {
 			body: JSON.stringify({ guess }),
 		});
 		if (!res.ok) {
+			setShowErrorMessage(true);
+			setTimeout(() => {
+				setShowErrorMessage(false);
+			}, 1000);
 			// handle errors (could do a toast here)
 			return;
 		}
@@ -146,11 +153,24 @@ function Play() {
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [handleKeyDown]);
+	}, [isFetching, handleKeyDown]);
 
 	return (
-		<div className="min-h-screen bg-slate-950 text-slate-300 flex flex-col justify-center items-center">
+		<div className="min-h-screen bg-slate-950 text-slate-300 flex flex-col justify-center items-center relative">
 			<WordleLogo theme="dark" />
+
+			<div
+				className={twMerge(
+					clsx(
+						"absolute bg-slate-100 p-2 rounded-lg top-[100px] sm:top-[140px] invisible",
+						{
+							visible: showErrorMessage,
+						},
+					),
+				)}
+			>
+				<p className="text-slate-900 font-bold">Not in word list</p>
+			</div>
 
 			<div className="flex flex-col gap-2">
 				{guesses.map((guess, i) => (
@@ -160,6 +180,7 @@ function Play() {
 						correctLetters={correctLetters[i]}
 						misplacedLetters={misplacedLetters[i]}
 						key={`${i}${guess}`}
+						cn={showErrorMessage ? "animate-shake" : ""}
 					/>
 				))}
 			</div>

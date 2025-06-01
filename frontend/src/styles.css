@@ -46,6 +46,7 @@ code {
 @theme {
 	--animate-popout: popout 50ms ease-in-out;
 	--animate-xRotate: xRotate 350ms ease-in-out;
+	--animate-shake: shake 200ms ease-in-out;
 
 	@keyframes popout {
 		0%,
@@ -66,6 +67,23 @@ code {
 
 		50% {
 			transform: rotateX(90deg);
+		}
+	}
+
+	@keyframes shake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+
+		20%,
+		60% {
+			transform: translateX(-0.5rem);
+		}
+
+		40%,
+		80% {
+			transform: translateX(0.5rem);
 		}
 	}
 }
