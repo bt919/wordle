@@ -1,8 +1,8 @@
 # Wordle Clone
 
 ## Introduction
-This project is a clone of the game Wordle. It uses vite on the frontend, fastify on the backend,
-postgresql for the database, and typescript for both the frontend and backend.
+This project is a clone of the game Wordle. It uses vite and typescript on the frontend, fastify
+and typescript on the backend, and postgresql for the database.
 
 ### Features
 - classic wordle mode
@@ -23,12 +23,13 @@ $ npx tsx sql/populate.ts > sql/dml.sql
 $ sudo -u user_name -d database_name -f sql/dml.sql
 ```
 The command above populates the words table with random words for the next
-200 days. You could instead choose a word each day by doing something like
+200 days. You could instead choose a word each day by doing something like:
 ```
 INSERT INTO words SELECT 'your_word_in_single_quotes', NOW()::date;
 ```
 The command below could be used to generate INSERT statement for the allowed_words
-table.
+table (app works with this table empty but then guesses will not be checked
+to be a valid word):
 ```
 $ npx tsx populate_allowed_words.ts > allowed_words_dml.txt
 ```
