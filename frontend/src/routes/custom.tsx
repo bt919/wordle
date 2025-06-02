@@ -16,7 +16,7 @@ function RouteComponent() {
 	const [showModal, setShowModal] = useState(false);
 	const [wordleId, setWordleId] = useState("");
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		if (word.length !== 5) {

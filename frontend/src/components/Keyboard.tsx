@@ -16,7 +16,6 @@ export function Keyboard({
 	const [lettersGuessed, setLettersGuessed] = useState(new Set());
 
 	useEffect(() => {
-		console.log("useEffect fired from keyboard.tsx");
 		setTimeout(() => {
 			const guessIndex = guesses.findLastIndex((g) => g.length === 5);
 			if (guessIndex === -1) {

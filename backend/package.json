@@ -8,7 +8,7 @@
     },
     "scripts": {
         "format": "npx @biomejs/biome format --write ./src",
-        "build": "rm -rf dist && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+        "build": "rm -rf dist && tsc --project tsconfig.json --outDir dist && tsc-alias -p tsconfig.json --outDir dist",
         "start": "node dist/index.js",
         "dev": "tsx watch src/index.ts | pino-pretty",
         "prepare": "cd .. && husky backend/.husky"
