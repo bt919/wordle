@@ -15,6 +15,7 @@ import { Route as PlayImport } from './routes/play'
 import { Route as CustomImport } from './routes/custom'
 import { Route as IndexImport } from './routes/index'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
+import { Route as CustomWordleIdImport } from './routes/custom_.$wordleId'
 
 // Create/Update Routes
 
@@ -39,6 +40,12 @@ const IndexRoute = IndexImport.update({
 const DemoTanstackQueryRoute = DemoTanstackQueryImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CustomWordleIdRoute = CustomWordleIdImport.update({
+  id: '/custom_/$wordleId',
+  path: '/custom/$wordleId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,6 +74,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayImport
       parentRoute: typeof rootRoute
     }
+    '/custom_/$wordleId': {
+      id: '/custom_/$wordleId'
+      path: '/custom/$wordleId'
+      fullPath: '/custom/$wordleId'
+      preLoaderRoute: typeof CustomWordleIdImport
+      parentRoute: typeof rootRoute
+    }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
       path: '/demo/tanstack-query'
@@ -83,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/custom': typeof CustomRoute
   '/play': typeof PlayRoute
+  '/custom/$wordleId': typeof CustomWordleIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 
@@ -90,6 +105,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/custom': typeof CustomRoute
   '/play': typeof PlayRoute
+  '/custom/$wordleId': typeof CustomWordleIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 
@@ -98,15 +114,27 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/custom': typeof CustomRoute
   '/play': typeof PlayRoute
+  '/custom_/$wordleId': typeof CustomWordleIdRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/custom' | '/play' | '/demo/tanstack-query'
+  fullPaths:
+    | '/'
+    | '/custom'
+    | '/play'
+    | '/custom/$wordleId'
+    | '/demo/tanstack-query'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/custom' | '/play' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/custom' | '/play' | '/demo/tanstack-query'
+  to: '/' | '/custom' | '/play' | '/custom/$wordleId' | '/demo/tanstack-query'
+  id:
+    | '__root__'
+    | '/'
+    | '/custom'
+    | '/play'
+    | '/custom_/$wordleId'
+    | '/demo/tanstack-query'
   fileRoutesById: FileRoutesById
 }
 
@@ -114,6 +142,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CustomRoute: typeof CustomRoute
   PlayRoute: typeof PlayRoute
+  CustomWordleIdRoute: typeof CustomWordleIdRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 }
 
@@ -121,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CustomRoute: CustomRoute,
   PlayRoute: PlayRoute,
+  CustomWordleIdRoute: CustomWordleIdRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 }
 
@@ -137,6 +167,7 @@ export const routeTree = rootRoute
         "/",
         "/custom",
         "/play",
+        "/custom_/$wordleId",
         "/demo/tanstack-query"
       ]
     },
@@ -148,6 +179,9 @@ export const routeTree = rootRoute
     },
     "/play": {
       "filePath": "play.tsx"
+    },
+    "/custom_/$wordleId": {
+      "filePath": "custom_.$wordleId.tsx"
     },
     "/demo/tanstack-query": {
       "filePath": "demo.tanstack-query.tsx"

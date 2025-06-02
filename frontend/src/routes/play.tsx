@@ -7,5 +7,5 @@ export const Route = createFileRoute("/play")({
 });
 
 function Play() {
-	return <Game wordLength={5} />;
+	return <Game wordLength={5} endpoint="/word" />;
 }
