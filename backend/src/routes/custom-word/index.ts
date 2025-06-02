@@ -99,11 +99,6 @@ export function customWordRoutes(
                 const id = request.params.id;
                 const { guess, password } = request.body;
 
-                const isWordValid = await fastify.query("SELECT 1 FROM allowed_words WHERE $1 ILIKE word", [guess])
-                if (isWordValid.rowCount === 0) {
-                    return reply.status(409).send({})
-                }
-
 
                 const params = [id];
                 const result = await fastify.query(
@@ -113,7 +108,13 @@ export function customWordRoutes(
                     params,
                 );
                 const { word, hash } = result.rows[0];
-                fastify.log.info({ word, hash });
+
+                const isWordValid = await fastify.query("SELECT 1 FROM allowed_words WHERE $1 ILIKE word", [guess])
+                fastify.log.info({ guess, word })
+                if (isWordValid.rowCount === 0 && word !== guess.toLowerCase()) {
+                    return reply.status(409).send({})
+                }
+
                 if (word.length !== guess.length) {
                     return reply
                         .status(400)
@@ -125,6 +126,7 @@ export function customWordRoutes(
                         return reply.status(400).send({ message: "password is incorrect" });
                     }
                 }
+
 
                 const correctLetters = [];
                 const misplacedLetters = [];
