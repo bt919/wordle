@@ -1,5 +1,13 @@
 # Wordle Clone
 
+## Introduction
+This project is a clone of the game Wordle. It uses vite on the frontend, fastify on the backend,
+postgresql for the database, and typescript for both the frontend and backend.
+
+### Features
+- classic wordle mode
+- custom wordle mode (create your own 5-letter wordle, and send it to others via a custom link)
+
 ## Database
 This project uses a postgresql database. You can run the ddl file against your
 local postgres db to populate it with empty tables with the following:
