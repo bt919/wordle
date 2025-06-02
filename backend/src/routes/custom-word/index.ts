@@ -99,6 +99,12 @@ export function customWordRoutes(
                 const id = request.params.id;
                 const { guess, password } = request.body;
 
+                const isWordValid = await fastify.query("SELECT 1 FROM allowed_words WHERE $1 ILIKE word", [guess])
+                if (isWordValid.rowCount === 0) {
+                    return reply.status(409).send({})
+                }
+
+
                 const params = [id];
                 const result = await fastify.query(
                     `SELECT word, hashed_password AS hash
