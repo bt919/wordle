@@ -62,5 +62,22 @@ export function wordRoutes(
         },
     );
 
+    fastify.get("/word", {}, async (request: FastifyRequest, reply: FastifyReply<{ Body: { word: string } }>) => {
+        try {
+            const wordSelect = await fastify.query("SELECT word FROM words WHERE word_date = NOW()::date")
+            if (wordSelect.rowCount === 0) {
+                throw new Error("No word for today")
+            }
+
+            const word = wordSelect.rows[0].word
+
+            return reply.status(200).send({ word })
+        } catch (ex) {
+            fastify.log.error(ex)
+            return reply.status(500).send({ message: "Something went wrong. Please try again later." })
+        }
+    })
+
+
     done();
 }

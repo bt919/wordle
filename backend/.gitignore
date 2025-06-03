@@ -63,6 +63,7 @@ dist
 # sql stuff
 sql/dml.sql
 sql/allowed_words_dml.txt
+sql/allowed_words_dml.sql
 sql/wordle-allowed-guesses.txt
 sql/wordle-answers-alphabetical.txt
 
