@@ -1,198 +1,239 @@
 import type {
-    FastifyInstance,
-    FastifyPluginOptions,
-    FastifyRequest,
-    FastifyReply,
-    HookHandlerDoneFunction,
+	FastifyInstance,
+	FastifyPluginOptions,
+	FastifyRequest,
+	FastifyReply,
+	HookHandlerDoneFunction,
 } from "fastify";
 import { Type } from "@fastify/type-provider-typebox";
 import bcrypt from "bcryptjs";
 import short from "short-uuid";
 
 export function customWordRoutes(
-    fastify: FastifyInstance,
-    opts: FastifyPluginOptions,
-    done: HookHandlerDoneFunction,
+	fastify: FastifyInstance,
+	opts: FastifyPluginOptions,
+	done: HookHandlerDoneFunction,
 ) {
-    fastify.post(
-        "/custom-word",
-        {
-            schema: {
-                body: Type.Object({
-                    word: Type.String({
-                        minLength: 5,
-                        maxLength: 5,
-                    }),
-                    password: Type.Optional(
-                        Type.String({
-                            minLength: 8,
-                            maxLength: 50,
-                        }),
-                    ),
-                }),
-            },
-        },
-        async (
-            request: FastifyRequest<{ Body: { word: string; password: string } }>,
-            reply: FastifyReply,
-        ) => {
-            try {
-                const { word, password } = request.body;
+	fastify.post(
+		"/custom-word",
+		{
+			schema: {
+				body: Type.Object({
+					word: Type.String({
+						minLength: 5,
+						maxLength: 5,
+					}),
+					password: Type.Optional(
+						Type.String({
+							minLength: 8,
+							maxLength: 50,
+						}),
+					),
+				}),
+			},
+		},
+		async (
+			request: FastifyRequest<{ Body: { word: string; password: string } }>,
+			reply: FastifyReply,
+		) => {
+			try {
+				const { word, password } = request.body;
 
-                const id = short.generate();
-                if (password) {
-                    const salt = await bcrypt.genSalt(10);
-                    const hash = await bcrypt.hash(password, salt);
-                    const params = [id, word.toLowerCase(), hash];
-                    await fastify.query(
-                        "INSERT INTO user_defined_words (id, word, hashed_password) VALUES ($1, $2, $3)",
-                        params,
-                    );
-                } else {
-                    const params = [id, word.toLowerCase()];
-                    await fastify.query(
-                        "INSERT INTO user_defined_words (id, word) VALUES ($1, $2)",
-                        params,
-                    );
-                }
+				const id = short.generate();
+				if (password) {
+					const salt = await bcrypt.genSalt(10);
+					const hash = await bcrypt.hash(password, salt);
+					const params = [id, word.toLowerCase(), hash];
+					await fastify.query(
+						"INSERT INTO user_defined_words (id, word, hashed_password) VALUES ($1, $2, $3)",
+						params,
+					);
+				} else {
+					const params = [id, word.toLowerCase()];
+					await fastify.query(
+						"INSERT INTO user_defined_words (id, word) VALUES ($1, $2)",
+						params,
+					);
+				}
 
-                return reply.status(201).send({ message: "success", id });
-            } catch (ex) {
-                fastify.log.error(ex);
-                return reply.status(500).send({});
-            }
-        },
-    );
+				return reply.status(201).send({ message: "success", id });
+			} catch (ex) {
+				fastify.log.error(ex);
+				return reply.status(500).send({});
+			}
+		},
+	);
 
-    fastify.post(
-        "/custom-word/:id",
-        {
-            schema: {
-                body: Type.Object({
-                    guess: Type.String({
-                        minLength: 3,
-                        maxLength: 10,
-                    }),
-                    password: Type.Optional(
-                        Type.String({
-                            minLength: 8,
-                            maxLength: 50,
-                        }),
-                    ),
-                }),
-                params: Type.Object({
-                    id: Type.String({
-                        minLength: 22,
-                        maxLength: 22,
-                    }),
-                }),
-            },
-        },
-        async (
-            request: FastifyRequest<{
-                Body: { guess: string; password: string };
-                Params: { id: string };
-            }>,
-            reply: FastifyReply,
-        ) => {
-            try {
-                const id = request.params.id;
-                const { guess, password } = request.body;
+	fastify.post(
+		"/custom-word/:id",
+		{
+			schema: {
+				body: Type.Object({
+					guess: Type.String({
+						minLength: 3,
+						maxLength: 10,
+					}),
+					password: Type.Optional(
+						Type.String({
+							minLength: 8,
+							maxLength: 50,
+						}),
+					),
+				}),
+				params: Type.Object({
+					id: Type.String({
+						minLength: 22,
+						maxLength: 22,
+					}),
+				}),
+			},
+		},
+		async (
+			request: FastifyRequest<{
+				Body: { guess: string; password: string };
+				Params: { id: string };
+			}>,
+			reply: FastifyReply,
+		) => {
+			try {
+				const id = request.params.id;
+				const { guess, password } = request.body;
 
-
-                const params = [id];
-                const result = await fastify.query(
-                    `SELECT word, hashed_password AS hash
+				const params = [id];
+				const result = await fastify.query(
+					`SELECT word, hashed_password AS hash
                                                 FROM user_defined_words
                                                 WHERE id = $1`,
-                    params,
-                );
-                const { word, hash } = result.rows[0];
+					params,
+				);
+				const { word, hash } = result.rows[0];
 
-                const isWordValid = await fastify.query("SELECT 1 FROM allowed_words WHERE $1 ILIKE word", [guess])
-                fastify.log.info({ guess, word })
-                if (isWordValid.rowCount === 0 && word !== guess.toLowerCase()) {
-                    return reply.status(409).send({})
-                }
+				const isWordValid = await fastify.query(
+					"SELECT 1 FROM allowed_words WHERE $1 ILIKE word",
+					[guess],
+				);
+				fastify.log.info({ guess, word });
+				if (isWordValid.rowCount === 0 && word !== guess.toLowerCase()) {
+					return reply.status(409).send({});
+				}
 
-                if (word.length !== guess.length) {
-                    return reply
-                        .status(400)
-                        .send({ message: "word is incorrect length" });
-                }
-                if (hash) {
-                    const isPasswordCorrect = await bcrypt.compare(password, hash);
-                    if (!isPasswordCorrect) {
-                        return reply.status(400).send({ message: "password is incorrect" });
-                    }
-                }
+				if (word.length !== guess.length) {
+					return reply
+						.status(400)
+						.send({ message: "word is incorrect length" });
+				}
+				if (hash) {
+					const isPasswordCorrect = await bcrypt.compare(password, hash);
+					if (!isPasswordCorrect) {
+						return reply.status(400).send({ message: "password is incorrect" });
+					}
+				}
 
+				const correctLetters = [];
+				const misplacedLetters = [];
+				for (let i = 0; i < guess.length; i += 1) {
+					const ch = guess.charAt(i).toLowerCase();
+					if (ch === word.charAt(i)) {
+						correctLetters.push(i);
+					} else if (word.indexOf(ch) !== -1) {
+						misplacedLetters.push(i);
+					}
+				}
 
-                const correctLetters = [];
-                const misplacedLetters = [];
-                for (let i = 0; i < guess.length; i += 1) {
-                    const ch = guess.charAt(i).toLowerCase();
-                    if (ch === word.charAt(i)) {
-                        correctLetters.push(i);
-                    } else if (word.indexOf(ch) !== -1) {
-                        misplacedLetters.push(i);
-                    }
-                }
+				return reply
+					.status(200)
+					.send({ correctLetters, misplacedLetters, guess });
+			} catch (ex) {
+				fastify.log.error(ex);
+				return reply
+					.status(500)
+					.send({ message: "Unexpected error. Try again later." });
+			}
+		},
+	);
 
-                return reply
-                    .status(200)
-                    .send({ correctLetters, misplacedLetters, guess });
-            } catch (ex) {
-                fastify.log.error(ex);
-                return reply
-                    .status(500)
-                    .send({ message: "Unexpected error. Try again later." });
-            }
-        },
-    );
+	fastify.get(
+		"/custom-word/length/:id",
+		{
+			schema: {
+				params: Type.Object({
+					id: Type.String({
+						minLength: 22,
+						maxLength: 22,
+					}),
+				}),
+			},
+		},
+		async (
+			request: FastifyRequest<{ Params: { id: string } }>,
+			reply: FastifyReply,
+		) => {
+			try {
+				const id = request.params.id;
+				const selectWord = await fastify.query(
+					"SELECT word FROM user_defined_words WHERE id = $1",
+					[id],
+				);
 
-    fastify.get(
-        "/custom-word/:id",
-        {
-            schema: {
-                params: Type.Object({
-                    id: Type.String({
-                        minLength: 22,
-                        maxLength: 22,
-                    }),
-                }),
-            },
-        },
-        async (
-            request: FastifyRequest<{ Params: { id: string } }>,
-            reply: FastifyReply,
-        ) => {
-            try {
-                const id = request.params.id;
+				if (selectWord.rowCount === 0) {
+					fastify.log.error(`No word associated with the id ${id}`);
+					return reply.status(400).send({ message: "Invalid id" });
+				}
 
-                const params = [id];
-                const result = await fastify.query(
-                    `SELECT word
+				const word = selectWord.rows[0].word;
+
+				return reply.status(200).send({ word });
+			} catch (ex) {
+				fastify.log.error(ex);
+				return reply
+					.status(500)
+					.send({ message: "Something went wrong. Please try again later." });
+			}
+		},
+	);
+
+	fastify.get(
+		"/custom-word/:id",
+		{
+			schema: {
+				params: Type.Object({
+					id: Type.String({
+						minLength: 22,
+						maxLength: 22,
+					}),
+				}),
+			},
+		},
+		async (
+			request: FastifyRequest<{ Params: { id: string } }>,
+			reply: FastifyReply,
+		) => {
+			try {
+				const id = request.params.id;
+
+				const params = [id];
+				const result = await fastify.query(
+					`SELECT word
                                                 FROM user_defined_words
                                                 WHERE id = $1`,
-                    params,
-                );
+					params,
+				);
 
-                if (result.rowCount === 0) {
-                    return reply.status(404).send({});
-                }
+				if (result.rowCount === 0) {
+					return reply.status(404).send({});
+				}
 
-                const { word } = result.rows[0];
+				const { word } = result.rows[0];
 
-                return reply.status(200).send({ wordLength: word.length });
-            } catch (ex) {
-                fastify.log.error(ex);
-                return reply
-                    .status(500)
-                    .send({ message: "Unexpected error. Try again later." });
-            }
-        },
-    );
+				return reply.status(200).send({ wordLength: word.length });
+			} catch (ex) {
+				fastify.log.error(ex);
+				return reply
+					.status(500)
+					.send({ message: "Unexpected error. Try again later." });
+			}
+		},
+	);
 
-    done();
+	done();
 }
