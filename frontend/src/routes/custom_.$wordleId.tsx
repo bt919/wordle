@@ -39,7 +39,7 @@ function RouteComponent() {
 			{isLoading ? (
 				<p>...is loading</p>
 			) : (
-				<Game wordLength={wordLength} endpoint={`/custom-word/${wordleId}`} />
+				<Game wordLength={wordLength} wordleId={wordleId} gameMode="custom" />
 			)}
 		</div>
 	);

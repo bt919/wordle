@@ -1,7 +1,7 @@
 # Wordle Clone
 
 ## Introduction
-This project is a clone of the game Wordle. It uses vite and typescript on the frontend, fastify
+This project is a clone of the game Wordle. It uses vite,react and typescript on the frontend, fastify
 and typescript on the backend, and postgresql for the database.
 
 ### Features

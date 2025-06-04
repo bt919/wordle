@@ -152,7 +152,7 @@ function RouteComponent() {
 										},
 									),
 								)}
-								placeholder="example"
+								placeholder="Enter 5-letter word"
 							/>
 						</label>
 						<p

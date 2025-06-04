@@ -23,7 +23,7 @@ function App() {
 					xmlns="http://www.w3.org/2000/svg"
 					aria-label="github icon"
 				>
-					<title>Github Icon</title>
+					<title>Github Repository</title>
 					<path
 						className="w-12 h-12"
 						fillRule="evenodd"

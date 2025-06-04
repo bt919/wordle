@@ -1,80 +1,77 @@
 @import "tailwindcss";
 
 body {
-    @apply m-0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+	@apply m-0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
 }
 
 @media (min-width: 500px) {
-    html {
-        min-height: 100vh;
-        min-width: 100vh;
-    }
+	html {
+		min-height: 100vh;
+		min-width: 100vh;
+	}
 
-    #app {
-        min-height: 100vh;
-        max-height: 100vh;
-    }
+	#app {
+		min-height: 100vh;
+		max-height: 100vh;
+	}
 
-    body {
-        min-height: 100%;
-        min-width: 100%;
-    }
+	body {
+		min-height: 100%;
+		min-width: 100%;
+	}
 }
 
 @theme {
-    --animate-popout: popout 50ms ease-in-out;
-    --animate-xRotate: xRotate 350ms ease-in-out;
-    --animate-shake: shake 200ms ease-in-out;
+	--animate-popout: popout 50ms ease-in-out;
+	--animate-xRotate: xRotate 350ms ease-in-out;
+	--animate-shake: shake 200ms ease-in-out;
 
-    @keyframes popout {
+	@keyframes popout {
+		0%,
+		100% {
+			transform: scale(1);
+		}
 
-        0%,
-        100% {
-            transform: scale(1);
-        }
+		50% {
+			transform: scale(1.15);
+		}
+	}
 
-        50% {
-            transform: scale(1.15);
-        }
-    }
+	@keyframes xRotate {
+		0%,
+		100% {
+			transform: rotateX(0);
+		}
 
-    @keyframes xRotate {
+		50% {
+			transform: rotateX(90deg);
+		}
+	}
 
-        0%,
-        100% {
-            transform: rotateX(0);
-        }
+	@keyframes shake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
 
-        50% {
-            transform: rotateX(90deg);
-        }
-    }
+		20%,
+		60% {
+			transform: translateX(-0.5rem);
+		}
 
-    @keyframes shake {
-
-        0%,
-        100% {
-            transform: translateX(0);
-        }
-
-        20%,
-        60% {
-            transform: translateX(-0.5rem);
-        }
-
-        40%,
-        80% {
-            transform: translateX(0.5rem);
-        }
-    }
+		40%,
+		80% {
+			transform: translateX(0.5rem);
+		}
+	}
 }
