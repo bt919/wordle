@@ -71,6 +71,12 @@ export function Game({
 			data.misplacedLetters,
 			...prev.slice(currentIndex + 1, 6),
 		]);
+
+		setIsGuessesComplete((prev) => [
+			...prev.slice(0, currentIndex),
+			true,
+			...prev.slice(currentIndex + 1, 6),
+		]);
 		if (data.correctLetters.length === wordLength) {
 			setIsGuessCorrect(true);
 			setTimeout(() => {
@@ -79,12 +85,8 @@ export function Game({
 			setTimeout(() => {
 				setShowWinMessage(false);
 			}, 3000);
+			return;
 		}
-		setIsGuessesComplete((prev) => [
-			...prev.slice(0, currentIndex),
-			true,
-			...prev.slice(currentIndex + 1, 6),
-		]);
 
 		if (isGuessesComplete[4]) {
 			// player has lost
