@@ -17,16 +17,17 @@ const app = fastify({
     logger: true,
 }).withTypeProvider<TypeBoxTypeProvider>();
 
+app.log.info("registering postgres")
 app.register(postgres);
+app.log.info("registering cors")
 app.register(cors, {});
+app.log.info("registering word routes")
 app.register(wordRoutes);
+app.log.info("registering customWord routes")
 app.register(customWordRoutes);
 
-app.get("/ping", async (request, reply) => {
-    return "bong\n";
-});
-
 if (require.main === module) {
+    app.log.info("server is about to start")
     app.listen({ port: 8080 }, (err, address) => {
         if (err) {
             console.error(err);
@@ -34,6 +35,6 @@ if (require.main === module) {
         }
         console.log(`Server listening at ${address}`);
     });
-} else {
-    module.exports = app
 }
+
+export default app;

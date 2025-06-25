@@ -1,6 +1,6 @@
 import awsLambdaFastify from "@fastify/aws-lambda";
-const app = require("./index");
+import app from "@/index";
 
-const proxy = awsLambdaFastify(app);
-
-export default proxy;
+export const handler = awsLambdaFastify(app, {
+    callbackWaitsForEmptyEventLoop: false
+});

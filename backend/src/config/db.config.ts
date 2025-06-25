@@ -1,8 +1,6 @@
 import { Type } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
-import "dotenv/config"
-
-
+import "dotenv/config";
 
 const ConfigType = Type.Object({
     user: Type.String(),
@@ -11,7 +9,7 @@ const ConfigType = Type.Object({
     port: Type.Number(),
     database: Type.String(),
     ssl: Type.Boolean()
-})
+});
 
 export const config = Value.Parse(ConfigType, {
     user: process.env.user,
@@ -20,5 +18,4 @@ export const config = Value.Parse(ConfigType, {
     port: process.env.port,
     database: process.env.database,
     ssl: process.env.ssl
-})
-
+});
