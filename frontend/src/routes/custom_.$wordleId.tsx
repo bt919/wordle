@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { apiUrl } from "@/lib/api-url";
 import { Game } from "@/components/Game";
+import { LoadingGuessBar } from "@/components/LoadingGuessBar";
 
 export const Route = createFileRoute("/custom_/$wordleId")({
 	component: RouteComponent,
@@ -37,7 +38,7 @@ function RouteComponent() {
 	return (
 		<div>
 			{isLoading ? (
-				<p>...is loading</p>
+				<LoadingGuessBar wordLength={wordLength} />
 			) : (
 				<Game wordLength={wordLength} wordleId={wordleId} gameMode="custom" />
 			)}
