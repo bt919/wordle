@@ -2,7 +2,10 @@
 
 ## Introduction
 This project is a clone of the game Wordle. It uses vite,react and typescript on the frontend, fastify
-and typescript on the backend, and postgresql for the database.
+and typescript on the backend, and postgresql for the database. The infrastructure is as follows:
+- database is hosted using supabase
+- backend is hosted using aws lambda and aws api gateway
+- frontend is hosted using cloudfare pages
 
 ### Features
 - classic wordle mode
