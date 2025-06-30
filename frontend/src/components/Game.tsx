@@ -56,7 +56,9 @@ export function Game({
         });
         if (!res.ok) {
             setIsInvalidWord(true);
-            setIsFetching(false);
+            setTimeout(() => {
+                setIsFetching(false);
+            }, 250);
             setTimeout(() => {
                 setIsInvalidWord(false);
             }, 1000);
@@ -124,7 +126,6 @@ export function Game({
         // trigger fetch only when "Enter" is hit
         if (isCurrentGuessFull) {
             if (isFetching) {
-                console.log({ isFetching }, " dfkj");
                 return;
             }
             const lastIndex = currentIndex === -1 ? 5 : currentIndex - 1;
