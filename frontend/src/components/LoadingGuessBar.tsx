@@ -1,6 +1,6 @@
 import { WordleLogo } from "./WordleLogo";
 
-export function LoadingGuessBar({ wordLength }: { wordLength: number }) {
+export function LoadingGuessBar() {
 	return (
 		<div className="min-h-screen bg-slate-950 text-slate-300 flex flex-col gap-4 justify-center items-center relative">
 			<WordleLogo theme="dark" />

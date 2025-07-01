@@ -38,7 +38,7 @@ function RouteComponent() {
 	return (
 		<div>
 			{isLoading ? (
-				<LoadingGuessBar wordLength={wordLength} />
+				<LoadingGuessBar />
 			) : (
 				<Game wordLength={wordLength} wordleId={wordleId} gameMode="custom" />
 			)}
