@@ -6,7 +6,6 @@ import { render } from "vitest-browser-react";
 
 import { App } from "../../src/routes/index.tsx";
 import { Play } from "../../src/routes/play.tsx";
-import { WordleLogo } from "../../src/components/WordleLogo";
 
 afterEach(() => {
     vi.resetAllMocks();
@@ -17,14 +16,6 @@ afterEach(() => {
 describe("WordleLogo", async () => {
     test("navigates to home page through wordle heading title", async () => {
         const rootRoute = createRootRoute();
-
-        const Index = () => {
-            return (
-                <>
-                    <WordleLogo theme="dark" />
-                </>
-            )
-        }
 
         const indexRoute = createRoute({
             getParentRoute: () => rootRoute,

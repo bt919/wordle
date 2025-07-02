@@ -10,7 +10,7 @@ export const Route = createFileRoute("/custom")({
 	component: RouteComponent,
 });
 
-function RouteComponent() {
+export function RouteComponent() {
 	const [word, setWord] = useState("");
 	const [showErrorMessage, setShowErrorMessage] = useState(false);
 	const [showModal, setShowModal] = useState(false);
