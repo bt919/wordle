@@ -6,6 +6,6 @@ export const Route = createFileRoute("/play")({
 	component: Play,
 });
 
-function Play() {
+export function Play() {
 	return <Game wordLength={5} gameMode="classic" />;
 }

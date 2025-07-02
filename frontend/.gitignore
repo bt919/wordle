@@ -6,3 +6,4 @@ dist-ssr
 
 src/lib/api-url.ts
 coverage
+tests/components/__screenshots__

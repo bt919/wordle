@@ -1,13 +1,53 @@
-import { test, expect } from "vitest";
+import { afterEach, expect, test, vi, describe } from "vitest";
+import { userEvent, page } from "@vitest/browser/context";
+import { createRootRoute, createRoute, createRouter, Link, RouterProvider } from "@tanstack/react-router";
+import { cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
 import { render } from "vitest-browser-react";
 
-import { WordleLogo } from "../../src/components/WordleLogo.tsx"
-import { Wrapper } from "./setup/wrapper.tsx"
+import { App } from "../../src/routes/index.tsx";
+import { Play } from "../../src/routes/play.tsx";
+import { WordleLogo } from "../../src/components/WordleLogo";
 
+afterEach(() => {
+    vi.resetAllMocks();
+    window.history.replaceState(null, '', '/')
+    cleanup();
+})
 
-test("renders wordle logo component", async () => {
-    const wrapper = Wrapper(<WordleLogo theme="dark" />);
-    const { getByText } = render(wrapper);
+describe("WordleLogo", async () => {
+    test("navigates to home page through wordle heading title", async () => {
+        const rootRoute = createRootRoute();
 
-    await expect.element(getByText("Wordle")).toBeInTheDocument();
-});
+        const Index = () => {
+            return (
+                <>
+                    <WordleLogo theme="dark" />
+                </>
+            )
+        }
+
+        const indexRoute = createRoute({
+            getParentRoute: () => rootRoute,
+            path: "/",
+            component: App
+        })
+
+        const playRoute = createRoute({
+            getParentRoute: () => rootRoute,
+            path: "/play",
+            component: Play
+        })
+
+        const routeTree = rootRoute.addChildren([indexRoute, playRoute])
+        const router = createRouter({ routeTree })
+        router.navigate({ href: "/play" })
+
+        render(<RouterProvider router={router} />)
+
+        expect(screen.queryByText("Get 6 chances to guess a 5-letter word.")).not.toBeInTheDocument();
+
+        const wordleLogo = await screen.findByText("Wordle");
+        await userEvent.click(wordleLogo);
+        expect(screen.queryByText("Get 6 chances to guess a 5-letter word.")).toBeInTheDocument();
+    })
+})
