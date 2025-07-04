@@ -1,0 +1,24 @@
+{
+    "name": "wordle",
+    "version": "1.0.0",
+    "description": "This project is a clone of the game Wordle. It uses vite,react and typescript on the frontend, fastify and typescript on the backend, and postgresql for the database. The infrastructure is as follows: - database is hosted using supabase - backend is hosted using aws lambda and aws api gateway - frontend is hosted using cloudfare pages",
+    "main": "index.js",
+    "scripts": {
+        "test": "npx cypress run"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bt919/wordle.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/bt919/wordle/issues"
+    },
+    "homepage": "https://github.com/bt919/wordle#readme",
+    "devDependencies": {
+        "cypress": "^14.5.1"
+    }
+}
