@@ -31,8 +31,7 @@ The command above populates the words table with random words for the next
 INSERT INTO words SELECT 'your_word_in_single_quotes', NOW()::date;
 ```
 The command below could be used to generate INSERT statement for the allowed_words
-table (app works with this table empty but then guesses will not be checked
-to be a valid word):
+table:
 ```
 $ npx tsx populate_allowed_words.ts > allowed_words_dml.txt
 ```
@@ -40,11 +39,20 @@ $ npx tsx populate_allowed_words.ts > allowed_words_dml.txt
 ## Backend
 To start running the backend, run the following commands: 
 ```
+$ cd backend
 $ cp .env.example .env
 ```
 At this point, you should populate the .env file, and then you can run the following
 to both run the server, and test it out:
 ```
 $ npm run dev
-$ curl http://localhost:8080/ping # this should be ran on another terminal
+$ curl -X POST http://localhost:8080/word -H "Content-Type: application/json" -d '{"guess": "sport"}'
+```
+
+## Frontend
+To run the frontend, run the following commands (you may need to change src/lib/api-url.ts):
+```
+$ cd frontend
+$ npm install
+$ npm run dev
 ```
