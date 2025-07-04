@@ -69,3 +69,4 @@ sql/wordle-answers-alphabetical.txt
 
 # environment variables
 .env
+.env.test

@@ -11,7 +11,9 @@
         "build": "rm -rf dist && tsc --project tsconfig.json --outDir dist && tsc-alias -p tsconfig.json --outDir dist",
         "start": "node dist/index.js",
         "dev": "tsx watch src/index.ts | pino-pretty",
-        "prepare": "cd .. && husky backend/.husky"
+        "prepare": "cd .. && husky backend/.husky",
+        "test": "vitest",
+        "test:run": "vitest run"
     },
     "keywords": [],
     "author": "",
@@ -44,6 +46,7 @@
         "pino-pretty": "^13.0.0",
         "tsc-alias": "^1.8.16",
         "tsx": "^4.19.4",
-        "typescript": "^5.8.3"
+        "typescript": "^5.8.3",
+        "vitest": "^3.2.4"
     }
 }
