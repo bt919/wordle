@@ -56,3 +56,23 @@ $ cd frontend
 $ npm install
 $ npm run dev
 ```
+
+## Tests
+To run e2e tests using cypress,first run the backend and frontend and then run the following in the 
+root directory (you may need to install some packages if you're using linux 
+https://docs.cypress.io/app/get-started/install-cypress#Linux-Prerequisites):
+```
+npm run test
+```
+
+To run frontend tests using vitest, run the following:
+```
+$ cd frontend
+$ npm run test
+```
+
+To run backend tests using vitest, run the following:
+```
+$ cd backend
+$ npm run test:run
+```
