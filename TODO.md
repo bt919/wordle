@@ -1,7 +1,7 @@
 # Some features we can implement
 
 ## Find out if we can attach event listeners to css animations, and use those if possible
-Currently, we hardcode the "congratulations" message to popup around 1 seconds after a uses guesses a word correctly because 1 second is roughly how long it takes for the css animations of the letters flippiing.
+Currently, we hardcode the "congratulations" message to popup around 1 seconds after a user guesses a word correctly because 1 second is roughly how long it takes for the css animations of the letters flippiing.
 
 ## Save the user's wordle progress for the day
 Currently, if a user guesses a word correctly, and then refreshes the page, the game resets, but we can probably use localStorage to rectify this. Just need to figure out how to reset the game the next day a user tries to play the new wordle.
@@ -12,5 +12,5 @@ This might be challenging because we don't have any auth in this, and we shouldn
 ## Implement some simple UI to show the user that the copy paste worked, after they click the "Create Link" button on the create your custom wordle page.
 This could be some simple toast that shows a check mark.
 
-## We need to handle some error handling UI on the frontend
+## We need some error handling UI on the frontend
 One possible error is when there is no wordle of the day in the db. There should also be some error handling for all other errors.
