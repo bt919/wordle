@@ -5,3 +5,5 @@ node_modules/
 frontend/src/lib/api-url.ts
 
 cypress/screenshots/
+
+tmux-*
