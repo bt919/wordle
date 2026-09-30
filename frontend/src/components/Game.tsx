@@ -114,6 +114,9 @@ export function Game({
 	};
 
 	const handleKeyDown = (e: KeyboardEvent) => {
+		if (e.altKey || e.ctrlKey || e.metaKey) {
+			return;
+		}
 		if (e.repeat) {
 			return;
 		}
