@@ -14,3 +14,7 @@ This could be some simple toast that shows a check mark.
 
 ## We need some error handling UI on the frontend
 One possible error is when there is no wordle of the day in the db. There should also be some error handling for all other errors.
+
+## Implement some rate limits on the backend, and add some frontend UI to show when those rate limits are hit
+
+## Add some more testing if necessary for the frontend/e2e, and the backend 
