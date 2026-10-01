@@ -21,6 +21,10 @@ function postgresPlugin(
 		fastify.decorate("query", query);
 	}
 
+	if (!fastify.db) {
+		fastify.decorate("db", pool);
+	}
+
 	done();
 }
 

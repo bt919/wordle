@@ -8,33 +8,34 @@ import postgres from "@/plugins/db";
 import { wordRoutes } from "@/routes/word/index";
 
 declare module "fastify" {
-    interface FastifyInstance {
-        query: pg.Pool["query"];
-    }
+	interface FastifyInstance {
+		query: pg.Pool["query"];
+		db: pg.Pool;
+	}
 }
 
 const app = fastify({
-    logger: true,
+	logger: true,
 }).withTypeProvider<TypeBoxTypeProvider>();
 
-app.log.info("registering postgres")
+app.log.info("registering postgres");
 app.register(postgres);
-app.log.info("registering cors")
+app.log.info("registering cors");
 app.register(cors, {});
-app.log.info("registering word routes")
+app.log.info("registering word routes");
 app.register(wordRoutes);
-app.log.info("registering customWord routes")
+app.log.info("registering customWord routes");
 app.register(customWordRoutes);
 
 if (require.main === module) {
-    app.log.info("server is about to start")
-    app.listen({ port: 8080 }, (err, address) => {
-        if (err) {
-            console.error(err);
-            process.exit(1);
-        }
-        console.log(`Server listening at ${address}`);
-    });
+	app.log.info("server is about to start");
+	app.listen({ port: 8080 }, (err, address) => {
+		if (err) {
+			console.error(err);
+			process.exit(1);
+		}
+		console.log(`Server listening at ${address}`);
+	});
 }
 
 export default app;
