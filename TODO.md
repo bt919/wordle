@@ -6,10 +6,10 @@
 
 ### If there is no word of the day, create one whenever a user starts a game.
 
-## Yet to be completed:
-
 ### Find out if we can attach event listeners to css animations, and use those if possible
 Currently, we hardcode the "congratulations" message to popup around 1 seconds after a user guesses a word correctly because 1 second is roughly how long it takes for the css animations of the letters flippiing.
+
+## Yet to be completed:
 
 ### Save the user's wordle progress for the day
 Currently, if a user guesses a word correctly, and then refreshes the page, the game resets, but we can probably use localStorage to rectify this. Just need to figure out how to reset the game the next day a user tries to play the new wordle.
