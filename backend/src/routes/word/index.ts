@@ -7,8 +7,6 @@ import type {
 } from "fastify";
 import { Type } from "@fastify/type-provider-typebox";
 
-import { faker } from "@faker-js/faker";
-
 export function wordRoutes(
     fastify: FastifyInstance,
     opts: FastifyPluginOptions,
@@ -44,37 +42,27 @@ export function wordRoutes(
                 const result = await fastify.query(
                     "SELECT word FROM words WHERE word_date = NOW()::date",
                 );
-                let wordOfTheDay = "error";
+                let wordOfTheDay = result.rows[0]?.word;
                 if (result.rowCount === 0) {
-                    // there is no word of the day so let us generate one
-                    const client = await fastify.db.connect();
-                    try {
-                        await client.query("BEGIN");
-                        while (true) {
-                            wordOfTheDay = faker.word.sample(5);
-                            const isWordExists = await client.query(
-                                "SELECT 1 FROM words WHERE $1 ILIKE word",
-                                [wordOfTheDay],
-                            );
-                            if (isWordExists.rowCount === 0) {
-                                await client.query(
-                                    "INSERT INTO words SELECT $1, NOW()::DATE;",
-                                    [wordOfTheDay],
-                                );
-                                await client.query("COMMIT");
-                                break;
-                            }
-                        }
-                    } catch (ex) {
-                        await client.query("ROLLBACK");
-                        fastify.log.error(ex);
-                        return reply.status(500).send({});
-                    } finally {
-                        client.release();
+                    // no word of the day so go ahead and create one
+                    const insertResult = await fastify.query(`
+                                INSERT INTO WORDS (word, word_date)
+                                    SELECT aw.word, NOW()::DATE
+                                    FROM allowed_words aw
+                                    WHERE aw.word NOT IN (SELECT w.word FROM words w)
+                                    ORDER BY random()
+                                    LIMIT 1
+                                ON CONFLICT DO NOTHING RETURNING word;`);
+                    if (insertResult.rowCount === 0) {
+                        const newlyGenerated = await fastify.query(`
+                            SELECT word
+                            FROM words
+                            WHERE word_date = NOW()::DATE;`);
+                        wordOfTheDay = newlyGenerated.rows[0]?.word;
                     }
+                    wordOfTheDay = wordOfTheDay ?? insertResult.rows[0]?.word;
                 }
-                const word = result.rows[0]?.word || wordOfTheDay;
-
+                const word = wordOfTheDay;
                 const correctLetters = [];
                 const misplacedLetters = [];
                 for (let i = 0; i < guess.length; i += 1) {
