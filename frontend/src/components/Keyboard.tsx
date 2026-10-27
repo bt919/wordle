@@ -1,60 +1,37 @@
 import clsx from "clsx";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 
+import type { LetterStatus } from "@/lib/word-status";
+
 export function Keyboard({
-	correctLetters,
-	misplacedLetters,
+	guessStatuses,
 	guesses,
 }: {
-	correctLetters: number[][];
-	misplacedLetters: number[][];
+	guessStatuses: LetterStatus[][];
 	guesses: string[];
 }) {
-	const [greenLetters, setGreenLetters] = useState(new Set());
-	const [yellowLetters, setYellowLetters] = useState(new Set());
-	const [lettersGuessed, setLettersGuessed] = useState(new Set());
-
-	useEffect(() => {
-		setTimeout(() => {
-			const guessIndex = guesses.findLastIndex((g) => g.length === 5);
-			if (guessIndex === -1) {
-				return;
+	const { correctLetters, misplacedLetters, absentLetters } = useMemo(() => {
+		const correct = new Set<string>();
+		const misplaced = new Set<string>();
+		const absent = new Set<string>();
+		guesses.forEach((guess, i) => {
+			const status = guessStatuses[i];
+			if (!status || status.length !== 5) return;
+			for (let j = 0; j < guess.length; j++) {
+				const ch = guess[j];
+				if (status[j] === "correct") correct.add(ch);
+				else if (status[j] === "misplaced" && !correct.has(ch))
+					misplaced.add(ch);
+				else absent.add(ch);
 			}
-
-			const currentGuess = guesses[guessIndex];
-			for (const letter of currentGuess) {
-				if (!lettersGuessed.has(letter)) {
-					setLettersGuessed((prev) => new Set(prev).add(letter));
-				}
-			}
-
-			const currentCorrect = correctLetters[guessIndex];
-			for (const letterIndex of currentCorrect) {
-				const ch = currentGuess[letterIndex];
-				if (!greenLetters.has(ch)) {
-					setGreenLetters((prev) => new Set(prev).add(ch));
-				}
-			}
-
-			const currentMisplaced = misplacedLetters[guessIndex];
-			for (const letterIndex of currentMisplaced) {
-				const ch = currentGuess[letterIndex];
-				if (!yellowLetters.has(ch)) {
-					setYellowLetters((prev) => new Set(prev).add(ch));
-				}
-			}
-		}, 1700);
-	}, [
-		correctLetters,
-		misplacedLetters,
-		greenLetters,
-		yellowLetters,
-		greenLetters.add,
-		greenLetters.has,
-		yellowLetters.add,
-		yellowLetters.has,
-	]);
+		});
+		return {
+			correctLetters: correct,
+			misplacedLetters: misplaced,
+			absentLetters: absent,
+		};
+	}, [guesses, guessStatuses]);
 
 	const layout = [
 		"Q",
@@ -99,9 +76,9 @@ export function Keyboard({
 								className={twMerge(
 									clsx(
 										"hover:bg-gray-400 active:bg-gray-600 hover:cursor-pointer bg-gray-500 text-slate-100 p-[8px] text-md sm:p-4 sm:text-lg font-bold rounded-md",
-										{ "bg-[#3A3A3C]": lettersGuessed.has(k) },
-										{ "bg-[#B59F38]": yellowLetters.has(k) },
-										{ "bg-green-600": greenLetters.has(k) },
+										{ "bg-[#3A3A3C]": absentLetters.has(k) },
+										{ "bg-[#B59F38]": misplacedLetters.has(k) },
+										{ "bg-green-600": correctLetters.has(k) },
 									),
 								)}
 								onClick={() => {
@@ -123,9 +100,9 @@ export function Keyboard({
 						className={twMerge(
 							clsx(
 								"hover:bg-gray-400 active:bg-gray-600 hover:cursor-pointer bg-gray-500 text-slate-100 p-[8px] text-md sm:p-4 sm:text-lg font-bold rounded-md",
-								{ "bg-[#3A3A3C]": lettersGuessed.has(k) },
-								{ "bg-[#B59F38]": yellowLetters.has(k) },
-								{ "bg-green-600": greenLetters.has(k) },
+								{ "bg-[#3A3A3C]": absentLetters.has(k) },
+								{ "bg-[#B59F38]": misplacedLetters.has(k) },
+								{ "bg-green-600": correctLetters.has(k) },
 							),
 						)}
 						onClick={() => {

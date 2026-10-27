@@ -1,51 +1,53 @@
 import type {
-    FastifyInstance,
-    FastifyPluginOptions,
-    FastifyReply,
-    FastifyRequest,
-    HookHandlerDoneFunction,
+	FastifyInstance,
+	FastifyPluginOptions,
+	FastifyReply,
+	FastifyRequest,
+	HookHandlerDoneFunction,
 } from "fastify";
 import { Type } from "@fastify/type-provider-typebox";
 
+import { type LetterStatus, computeGuessStatus } from "@/lib/word-status";
+
 export function wordRoutes(
-    fastify: FastifyInstance,
-    opts: FastifyPluginOptions,
-    done: HookHandlerDoneFunction,
+	fastify: FastifyInstance,
+	opts: FastifyPluginOptions,
+	done: HookHandlerDoneFunction,
 ) {
-    fastify.post(
-        "/word",
-        {
-            schema: {
-                body: Type.Object({
-                    guess: Type.String({
-                        minLength: 5,
-                        maxLength: 5,
-                    }),
-                }),
-            },
-        },
-        async (
-            request: FastifyRequest<{ Body: { guess: string } }>,
-            reply: FastifyReply,
-        ) => {
-            try {
-                const { guess } = request.body;
+	fastify.post(
+		"/word",
+		{
+			schema: {
+				body: Type.Object({
+					guess: Type.String({
+						minLength: 5,
+						maxLength: 5,
+					}),
+				}),
+			},
+		},
+		async (
+			request: FastifyRequest<{ Body: { guess: string } }>,
+			reply: FastifyReply,
+		) => {
+			try {
+				const { guess } = request.body;
 
-                const isWordValid = await fastify.query(
-                    "SELECT 1 FROM allowed_words WHERE $1 ILIKE word",
-                    [guess],
-                );
-                if (isWordValid.rowCount === 0) {
-                    return reply.status(409).send({});
-                }
+				const isWordValid = await fastify.query(
+					"SELECT 1 FROM allowed_words WHERE $1 ILIKE word",
+					[guess],
+				);
+				if (isWordValid.rowCount === 0) {
+					return reply.status(409).send({});
+				}
 
-                const result = await fastify.query(
-                    "SELECT word FROM words WHERE word_date = NOW()::date",
-                );
-                let wordOfTheDay = result.rows[0]?.word;
-                if (result.rowCount === 0) {
-                    // no word of the day so go ahead and create one
-                    const insertResult = await fastify.query(`
+				const result = await fastify.query(
+					"SELECT word FROM words WHERE word_date = NOW()::date",
+				);
+				let wordOfTheDay = result.rows[0]?.word;
+				if (result.rowCount === 0) {
+					// no word of the day so go ahead and create one
+					const insertResult = await fastify.query(`
                                 INSERT INTO WORDS (word, word_date)
                                     SELECT aw.word, NOW()::DATE
                                     FROM allowed_words aw
@@ -53,60 +55,50 @@ export function wordRoutes(
                                     ORDER BY random()
                                     LIMIT 1
                                 ON CONFLICT DO NOTHING RETURNING word;`);
-                    if (insertResult.rowCount === 0) {
-                        const newlyGenerated = await fastify.query(`
+					if (insertResult.rowCount === 0) {
+						const newlyGenerated = await fastify.query(`
                             SELECT word
                             FROM words
                             WHERE word_date = NOW()::DATE;`);
-                        wordOfTheDay = newlyGenerated.rows[0]?.word;
-                    }
-                    wordOfTheDay = wordOfTheDay ?? insertResult.rows[0]?.word;
-                }
-                const word = wordOfTheDay;
-                const correctLetters = [];
-                const misplacedLetters = [];
-                for (let i = 0; i < guess.length; i += 1) {
-                    const ch = guess.charAt(i).toLowerCase();
-                    if (ch === word.charAt(i)) {
-                        correctLetters.push(i);
-                    } else if (word.indexOf(ch) !== -1) {
-                        misplacedLetters.push(i);
-                    }
-                }
+						wordOfTheDay = newlyGenerated.rows[0]?.word;
+					}
+					wordOfTheDay = wordOfTheDay ?? insertResult.rows[0]?.word;
+				}
 
-                return reply
-                    .status(200)
-                    .send({ correctLetters, misplacedLetters, guess });
-            } catch (ex) {
-                fastify.log.error(ex);
-                return reply.status(500).send({});
-            }
-        },
-    );
+				const word = wordOfTheDay;
+				const status: LetterStatus[] = computeGuessStatus(word, guess);
 
-    fastify.get(
-        "/word",
-        {},
-        async (request: FastifyRequest, reply: FastifyReply) => {
-            try {
-                const selectWord = await fastify.query(
-                    "SELECT word FROM words WHERE word_date = NOW()::date",
-                );
-                if (selectWord.rowCount === 0) {
-                    throw new Error("No word for today");
-                }
+				return reply.status(200).send({ status, guess });
+			} catch (ex) {
+				fastify.log.error(ex);
+				return reply.status(500).send({});
+			}
+		},
+	);
 
-                const word = selectWord.rows[0].word;
+	fastify.get(
+		"/word",
+		{},
+		async (request: FastifyRequest, reply: FastifyReply) => {
+			try {
+				const selectWord = await fastify.query(
+					"SELECT word FROM words WHERE word_date = NOW()::date",
+				);
+				if (selectWord.rowCount === 0) {
+					throw new Error("No word for today");
+				}
 
-                return reply.status(200).send({ word });
-            } catch (ex) {
-                fastify.log.error(ex);
-                return reply
-                    .status(500)
-                    .send({ message: "Something went wrong. Please try again later." });
-            }
-        },
-    );
+				const word = selectWord.rows[0].word;
 
-    done();
+				return reply.status(200).send({ word });
+			} catch (ex) {
+				fastify.log.error(ex);
+				return reply
+					.status(500)
+					.send({ message: "Something went wrong. Please try again later." });
+			}
+		},
+	);
+
+	done();
 }

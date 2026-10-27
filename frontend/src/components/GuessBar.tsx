@@ -1,18 +1,17 @@
+import type { LetterStatus } from "@/lib/word-status";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function GuessBar({
 	isGuessComplete,
 	guess,
-	correctLetters,
-	misplacedLetters,
+	currentGuessStatus,
 	cn,
 	wordLength,
 }: {
 	isGuessComplete: boolean;
 	guess: string;
-	correctLetters: number[];
-	misplacedLetters: number[];
+	currentGuessStatus: LetterStatus[];
 	cn: string;
 	wordLength: number;
 }) {
@@ -70,11 +69,11 @@ export function GuessBar({
 								},
 								{
 									"ease-in-out bg-[#B59F38]":
-										misplacedLetters.indexOf(index) !== -1,
+										currentGuessStatus[index] === "misplaced",
 								},
 								{
 									"ease-in-out bg-green-600":
-										correctLetters.indexOf(index) !== -1,
+										currentGuessStatus[index] === "correct",
 								},
 							),
 						)}

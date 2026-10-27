@@ -9,6 +9,8 @@ import { Type } from "@fastify/type-provider-typebox";
 import bcrypt from "bcryptjs";
 import short from "short-uuid";
 
+import { type LetterStatus, computeGuessStatus } from "@/lib/word-status";
+
 export function customWordRoutes(
 	fastify: FastifyInstance,
 	opts: FastifyPluginOptions,
@@ -106,13 +108,16 @@ export function customWordRoutes(
                                                 WHERE id = $1`,
 					params,
 				);
+				if (result.rowCount === 0) {
+					return reply.status(404);
+				}
 				const { word, hash } = result.rows[0];
 
 				const isWordValid = await fastify.query(
 					"SELECT 1 FROM allowed_words WHERE $1 ILIKE word",
 					[guess],
 				);
-				fastify.log.info({ guess, word });
+
 				if (isWordValid.rowCount === 0 && word !== guess.toLowerCase()) {
 					return reply.status(409).send({});
 				}
@@ -129,20 +134,9 @@ export function customWordRoutes(
 					}
 				}
 
-				const correctLetters = [];
-				const misplacedLetters = [];
-				for (let i = 0; i < guess.length; i += 1) {
-					const ch = guess.charAt(i).toLowerCase();
-					if (ch === word.charAt(i)) {
-						correctLetters.push(i);
-					} else if (word.indexOf(ch) !== -1) {
-						misplacedLetters.push(i);
-					}
-				}
+				const status: LetterStatus[] = computeGuessStatus(word, guess);
 
-				return reply
-					.status(200)
-					.send({ correctLetters, misplacedLetters, guess });
+				return reply.status(200).send({ status, guess });
 			} catch (ex) {
 				fastify.log.error(ex);
 				return reply

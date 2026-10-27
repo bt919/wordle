@@ -12,10 +12,10 @@ Currently, we hardcode the "congratulations" message to popup around 1 seconds a
 ### Implement some simple UI to show the user that the copy paste worked, after they click the "Create Link" button on the create your custom wordle page.
 This could be some simple toast that shows a check mark.
 
-## Yet to be completed:
-
 ### Fix a game logic bug where we are not scoring each guess properly
 For example, when a user guesses 'teeth' for 'cleat', the second 'e' should gray instead of yellow.
+
+## Yet to be completed:
 
 ### Save the user's wordle progress for the day
 Currently, if a user guesses a word correctly, and then refreshes the page, the game resets, but we can probably use localStorage to rectify this. Just need to figure out how to reset the game the next day a user tries to play the new wordle.
